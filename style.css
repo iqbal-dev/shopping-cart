@@ -53,3 +53,12 @@ body{
 	background-color: #2FBE70;
 	border: none;
 }
+.success{
+	margin: 100px 0;
+	background-color: #F6F5FA;;
+	padding: 60px 0;
+	text-align: center;
+	border-radius: 10px;
+	color: #2FBE70;
+	display: none;
+}

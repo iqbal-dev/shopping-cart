@@ -14,9 +14,9 @@
 
    <section>
       <div class="container">
-         <div class="cart">
+         <div class="cart" id="cart">
             <div class="col-md-12 col-lg-10 mx-auto">
-               <div class="cart-item">
+               <div class="cart-item" id="cartItem1">
                   <div class="row">
                      <div class="col-md-7 center-item">
                         <img src="images/product-1.png" alt="">
@@ -25,17 +25,17 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="minusButton1" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="mobileNumber" type="text" class="form-control text-center" value="1">
+                           <button id="plusButton1" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$1219</h5>
-                        <img src="images/remove.png" alt="" class="remove-item">
+                        <h5>$ <span id="mobilePrice">1219</span></h5>
+                        <img src="images/remove.png" id="removeMobile" alt="" class="remove-item">
                      </div>
                   </div>
                </div>
 
-               <div class="cart-item">
+               <div class="cart-item" id="cartItem2">
                   <div class="row">
                      <div class="col-md-7 center-item mx-auto">
                         <img src="images/product-2.png" alt="">
@@ -43,13 +43,13 @@
                      </div>
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button class="btn btn-default" id="minusButton2"><i class="fas fa-minus"></i></button>
+                           <input id="caseNumber" type="text" class="form-control text-center" value="1">
+                           <button class="btn btn-default" id="plusButton2"><i class="fas fa-plus"></i></button>
 
                         </div>
-                        <h5>$59</h5>
-                        <img src="images/remove.png" alt="" class="remove-item">
+                        <h5>$<span id="casePrice">59</span></h5>
+                        <img src="images/remove.png" id="removeCase" alt="" class="remove-item">
                      </div>
                   </div>
                </div>
@@ -64,19 +64,136 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
-                        <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5>$ <span id="subTotal">1,278</span></h5>
+                        <h5>$ <span id="text">0</span></h5>
+                        <h5>$ <span id="total">1,278</span></h5>
                      </div>
                   </div>
                </div>
                <div class="col-md-12 pt-4 pb-4">
-                  <button type="button" class="btn btn-success check-out">Check Out</button>
+                  <button id="checkOutBtn" type="button" class="btn btn-success check-out">Check Out</button>
                </div>
             </div>
+         </div>
+         <div class="success" id="success">
+            <h1> Your Shopping is Successfully Done!</h1>
          </div>
       </div>
    </section>
 </body>
+<script>
+
+
+   plus('plusButton2','caseNumber','casePrice',59)
+   minus('minusButton2','caseNumber','casePrice',59)
+   plus('plusButton1','mobileNumber','mobilePrice',1219)
+   minus('minusButton1','mobileNumber','mobilePrice',1219)
+   invoice('casePrice','mobilePrice')
+   document.getElementById('plusButton1').addEventListener('click',()=>{
+      invoice('casePrice','mobilePrice')
+      })
+   document.getElementById('plusButton2').addEventListener('click',()=>{
+      invoice('casePrice','mobilePrice')
+      })
+   document.getElementById('minusButton1').addEventListener('click',()=>{
+      invoice('casePrice','mobilePrice')
+      })
+   document.getElementById('minusButton2').addEventListener('click',()=>{
+      invoice('casePrice','mobilePrice')
+      })
+
+
+/************** plus button  **********/
+   function plus(plusId,productNumberId,productPriceId,value){
+      const plus = document.getElementById(plusId)
+      plus.addEventListener('click',()=>{
+      const productNumbers = productNumber(productNumberId,1)
+
+      const productPriceIncrease = value*productNumbers;
+      
+      document.getElementById(productPriceId).innerText = productPriceIncrease;
+
+   })
+   }
+
+/***************** minus button ***************/
+ function minus(minusID,productNumberId,productPriceId,number){
+      const minus = document.getElementById(minusID)
+      minus.addEventListener('click', ()=>{
+         const productNumbers = productNumber(productNumberId,-1)
+         if(productNumbers<1){
+            
+         document.getElementById(productNumberId).value = 1;
+         }
+         productPrice(productPriceId,number)
+
+   })
+   
+ }
+ 
+ /***************** Product Number ***************/
+ function productNumber(id,iterate){
+      const product = document.getElementById(id).value
+      let productNumber = parseInt(product);
+         productNumber=productNumber+iterate;
+      document.getElementById(id).value = productNumber;
+      return productNumber
+      }
+      
+
+   /***************** Product Price ***************/
+   function productPrice(id,basePrice){
+      const productPrice = document.getElementById(id).innerText;
+      let productPriceValue = parseInt(productPrice)
+      if(productPriceValue<=basePrice){
+         productPriceValue = basePrice;
+      }
+      else{
+         productPriceValue = productPriceValue - basePrice;
+      }
+      document.getElementById(id).innerText = productPriceValue
+      return productPriceValue;
+   }
+
+
+/***************** invoice ***************/
+  function invoice(caseId,mobileId){
+       const caseTotalPrice = document.getElementById(caseId).innerText;
+     const caseTotalPriceNumber = parseInt(caseTotalPrice);
+     const mobileTotalPrice = document.getElementById(mobileId).innerText; 
+     const mobileTotalPriceNumber = parseInt(mobileTotalPrice);
+      const subtotal = caseTotalPriceNumber + mobileTotalPriceNumber;
+     const productText = tax(subtotal);
+     document.getElementById('subTotal').innerText = subtotal;
+     const total = subtotal + productText;
+     document.getElementById('total').innerText = total
+  }
+
+/***************** tax calculate***************/
+   function tax(price){
+      const text = (price*5)/100;
+      document.getElementById('text').innerText = text;
+      return text
+   }
+
+
+/***************** remove Item***************/
+   document.getElementById('removeMobile').addEventListener('click',(event)=>{
+       document.getElementById('cartItem1').remove()
+   })
+   document.getElementById('removeCase').addEventListener('click',()=>{
+   document.getElementById('cartItem2').remove()
+})
+
+
+
+document.getElementById('checkOutBtn').addEventListener('click',()=>{
+   document.getElementById('success').style.display= 'block'
+   document.getElementById('cart').style.display = 'none'
+})
+
+
+   
+</script>
 
 </html>
